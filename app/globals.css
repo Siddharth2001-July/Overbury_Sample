@@ -306,6 +306,15 @@ a {
   }
 }
 
+/* Toolbar Back Button - distinct styling */
+.toolbar-back-button {
+  background-color: #e74c3c !important;
+}
+
+.toolbar-back-button:hover {
+  background-color: #c0392b !important;
+}
+
 /* Back Button Styles */
 .back-button {
   position: absolute;

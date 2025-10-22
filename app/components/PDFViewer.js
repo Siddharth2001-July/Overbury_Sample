@@ -86,10 +86,29 @@ const ComparisonButton = ({ onClick }) => {
   );
 };
 
+// Back button component for toolbar
+const ToolbarBackButton = ({ onClick }) => {
+  return (
+    <button
+      onClick={onClick}
+      title="Back to Upload"
+      className="toolbar-button toolbar-back-button"
+    >
+      <img
+        src="/icons/back-arrow.svg"
+        alt="Back"
+        className="toolbar-button-icon"
+      />
+    </button>
+  );
+};
+
 // Vertical Toolbar Component
-const VerticalToolbar = ({ tools, activeTool, onToolClick, onCompareClick }) => {
+const VerticalToolbar = ({ tools, activeTool, onToolClick, onCompareClick, onBack }) => {
   return (
     <div className="toolbar-container">
+      <ToolbarBackButton onClick={onBack} />
+      <div className="toolbar-separator" />
       {tools.map((tool) => (
         <ToolbarButton
           key={tool.id}
@@ -101,23 +120,6 @@ const VerticalToolbar = ({ tools, activeTool, onToolClick, onCompareClick }) => 
       <div className="toolbar-separator" />
       <ComparisonButton onClick={onCompareClick} />
     </div>
-  );
-};
-
-// Back button component
-const BackButton = ({ onClick }) => {
-  return (
-    <button
-      onClick={onClick}
-      className="back-button"
-    >
-      <img
-        src="/icons/back-arrow.svg"
-        alt="Back"
-        className="back-button-icon"
-      />
-      Back to Upload
-    </button>
   );
 };
 
@@ -223,13 +225,13 @@ const PDFViewer = ({ documentUrl, onBack, comparisonColors }) => {
 
   return (
     <div className="pdf-viewer-container">
-      <BackButton onClick={onBack} />
       {!isLoading && (
         <VerticalToolbar
           tools={TOOLS}
           activeTool={activeTool}
           onToolClick={handleToolClick}
           onCompareClick={handleCompareDocuments}
+          onBack={onBack}
         />
       )}
       <div ref={containerRef} className="pdf-viewer-content" />
