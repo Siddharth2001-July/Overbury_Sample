@@ -1,12 +1,52 @@
 :root {
+  /* Light mode colors */
   --background: #ffffff;
   --foreground: #171717;
+  --upload-bg: #f5f5f5;
+  --upload-text: #333333;
+  --upload-subtitle: #666666;
+  --dropzone-border: #cccccc;
+  --dropzone-bg: rgba(0, 0, 0, 0.02);
+  --dropzone-hover-border: #3498db;
+  --dropzone-hover-bg: rgba(52, 152, 219, 0.1);
+  --toolbar-bg: #ffffff;
+  --toolbar-button-bg: #f0f0f0;
+  --toolbar-button-hover: #e0e0e0;
+  --toolbar-button-active: #3498db;
+  --toolbar-separator: #e0e0e0;
+  --back-button-bg: #ffffff;
+  --back-button-hover: #f0f0f0;
+  --error-bg: #1a1a1a;
+  --button-secondary-bg: #f0f0f0;
+  --button-secondary-hover: #e0e0e0;
+  --button-secondary-text: #333333;
+  --hint-color: #999999;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
+    /* Dark mode colors */
     --background: #0a0a0a;
     --foreground: #ededed;
+    --upload-bg: #1a1a1a;
+    --upload-text: #ffffff;
+    --upload-subtitle: #999999;
+    --dropzone-border: #444444;
+    --dropzone-bg: rgba(255, 255, 255, 0.02);
+    --dropzone-hover-border: #3498db;
+    --dropzone-hover-bg: rgba(52, 152, 219, 0.1);
+    --toolbar-bg: #2c3e50;
+    --toolbar-button-bg: #34495e;
+    --toolbar-button-hover: #4a5f7f;
+    --toolbar-button-active: #3498db;
+    --toolbar-separator: #1a1a1a;
+    --back-button-bg: #2c3e50;
+    --back-button-hover: #34495e;
+    --error-bg: #1a1a1a;
+    --button-secondary-bg: #2c3e50;
+    --button-secondary-hover: #34495e;
+    --button-secondary-text: #ffffff;
+    --hint-color: #666666;
   }
 }
 
@@ -39,4 +79,386 @@ a {
   html {
     color-scheme: dark;
   }
+}
+
+/* PDF Upload Screen Styles */
+.pdf-upload-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: var(--upload-bg);
+  color: var(--upload-text);
+  padding: 20px;
+}
+
+.pdf-upload-content {
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+}
+
+.pdf-upload-title {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  font-weight: 600;
+  color: var(--upload-text);
+}
+
+.pdf-upload-subtitle {
+  font-size: 1.1rem;
+  color: var(--upload-subtitle);
+  margin-bottom: 40px;
+}
+
+.pdf-upload-dropzone {
+  border: 3px dashed var(--dropzone-border);
+  border-radius: 12px;
+  padding: 60px 40px;
+  background-color: var(--dropzone-bg);
+  transition: all 0.3s ease;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.pdf-upload-dropzone.dragging {
+  border-color: var(--dropzone-hover-border);
+  background-color: var(--dropzone-hover-bg);
+}
+
+.pdf-upload-input {
+  display: none;
+}
+
+.pdf-upload-label {
+  cursor: pointer;
+}
+
+.pdf-upload-icon {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 20px;
+  filter: brightness(0) saturate(100%) invert(52%) sepia(84%) saturate(2076%) hue-rotate(186deg) brightness(97%) contrast(97%);
+}
+
+.pdf-upload-selected-text {
+  font-size: 1.2rem;
+  color: #3498db;
+  margin-bottom: 10px;
+}
+
+.pdf-upload-instruction {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  color: var(--upload-text);
+}
+
+.pdf-upload-hint {
+  font-size: 0.9rem;
+  color: var(--hint-color);
+}
+
+.pdf-upload-error {
+  color: #e74c3c;
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: rgba(231, 76, 60, 0.1);
+  border-radius: 6px;
+}
+
+.pdf-upload-divider-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.pdf-upload-divider-text {
+  color: var(--hint-color);
+}
+
+.pdf-upload-sample-button {
+  padding: 12px 24px;
+  background-color: var(--button-secondary-bg);
+  color: var(--button-secondary-text);
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.pdf-upload-sample-button:hover {
+  background-color: var(--button-secondary-hover);
+}
+
+/* PDF Viewer Styles */
+.pdf-viewer-container {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+}
+
+.pdf-viewer-content {
+  height: 100vh;
+  width: 100%;
+}
+
+.pdf-viewer-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #ffffff;
+  font-size: 1.2rem;
+}
+
+.pdf-viewer-error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: var(--upload-bg);
+  color: var(--upload-text);
+}
+
+.pdf-viewer-error-text {
+  font-size: 1.2rem;
+  color: #e74c3c;
+  margin-bottom: 20px;
+}
+
+.pdf-viewer-error-button {
+  padding: 12px 24px;
+  background-color: var(--button-secondary-bg);
+  color: var(--button-secondary-text);
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+/* Toolbar Styles */
+.toolbar-container {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1000;
+  background-color: var(--toolbar-bg);
+  border-radius: 8px;
+  padding: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border: 1px solid var(--toolbar-separator);
+}
+
+.toolbar-separator {
+  height: 1px;
+  background-color: var(--toolbar-separator);
+  margin: 4px 0;
+}
+
+.toolbar-button {
+  width: 48px;
+  height: 48px;
+  border: none;
+  border-radius: 6px;
+  background-color: var(--toolbar-button-bg);
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toolbar-button:hover {
+  background-color: var(--toolbar-button-hover);
+}
+
+.toolbar-button.active {
+  background-color: var(--toolbar-button-active);
+}
+
+.toolbar-button-icon {
+  width: 24px;
+  height: 24px;
+}
+
+/* Light mode: icons need to be black */
+@media (prefers-color-scheme: light) {
+  .toolbar-button-icon {
+    filter: none;
+  }
+}
+
+/* Dark mode: icons need to be white */
+@media (prefers-color-scheme: dark) {
+  .toolbar-button-icon {
+    filter: invert(1);
+  }
+}
+
+/* Back Button Styles */
+.back-button {
+  position: absolute;
+  top: 50px;
+  left: 20px;
+  z-index: 1001;
+  padding: 10px 20px;
+  background-color: var(--back-button-bg);
+  color: var(--button-secondary-text);
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--toolbar-separator);
+}
+
+.back-button:hover {
+  background-color: var(--back-button-hover);
+}
+
+.back-button-icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* Light mode: back icon needs to be black */
+@media (prefers-color-scheme: light) {
+  .back-button-icon {
+    filter: none;
+  }
+}
+
+/* Dark mode: back icon needs to be white */
+@media (prefers-color-scheme: dark) {
+  .back-button-icon {
+    filter: invert(1);
+  }
+}
+
+/* Main App Container */
+.app-container {
+  height: 100vh;
+  width: 100%;
+}
+
+/* Color Configuration Styles */
+.color-config-section {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  width: 100%;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.color-config-toggle {
+  background-color: var(--button-secondary-bg);
+  border: 1px solid var(--dropzone-border);
+  border-radius: 6px;
+  color: var(--upload-text);
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  width: 100%;
+  text-align: left;
+}
+
+.color-config-toggle:hover {
+  background-color: var(--button-secondary-hover);
+}
+
+.color-config-content {
+  margin-top: 15px;
+  padding: 20px;
+  background-color: var(--dropzone-bg);
+  border: 2px solid var(--dropzone-border);
+  border-radius: 8px;
+}
+
+.color-config-description {
+  color: var(--upload-text);
+  font-size: 0.9rem;
+  margin-bottom: 15px;
+  opacity: 0.9;
+}
+
+.color-config-option {
+  margin-bottom: 15px;
+}
+
+.color-config-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  color: var(--upload-text);
+  font-size: 0.95rem;
+}
+
+.color-config-checkbox input[type="checkbox"] {
+  cursor: pointer;
+}
+
+.color-config-inputs {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+.color-input-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.color-input-group label {
+  color: var(--upload-text);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.color-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.color-input {
+  width: 50px;
+  height: 40px;
+  border: 2px solid var(--dropzone-border);
+  border-radius: 6px;
+  cursor: pointer;
+  background: none;
+}
+
+.color-value {
+  color: var(--hint-color);
+  font-family: monospace;
+  font-size: 0.9rem;
+  padding: 6px 10px;
+  background-color: var(--dropzone-bg);
+  border: 1px solid var(--dropzone-border);
+  border-radius: 4px;
 }
