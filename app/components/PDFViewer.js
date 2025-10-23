@@ -101,6 +101,40 @@ const ComparisonConfigButton = ({ onClick }) => {
   );
 };
 
+// Zoom In Button Component
+const ZoomInButton = ({ onClick }) => {
+  return (
+    <button
+      onClick={onClick}
+      title="Zoom In"
+      className="toolbar-button"
+    >
+      <img
+        src="/icons/zoom-in.svg"
+        alt="Zoom In"
+        className="toolbar-button-icon"
+      />
+    </button>
+  );
+};
+
+// Zoom Out Button Component
+const ZoomOutButton = ({ onClick }) => {
+  return (
+    <button
+      onClick={onClick}
+      title="Zoom Out"
+      className="toolbar-button"
+    >
+      <img
+        src="/icons/zoom-out.svg"
+        alt="Zoom Out"
+        className="toolbar-button-icon"
+      />
+    </button>
+  );
+};
+
 // Back button component for toolbar
 const ToolbarBackButton = ({ onClick }) => {
   return (
@@ -119,10 +153,13 @@ const ToolbarBackButton = ({ onClick }) => {
 };
 
 // Vertical Toolbar Component
-const VerticalToolbar = ({ tools, activeTool, onToolClick, onCompareClick, onComparisonConfigClick, onBack, isInComparisonMode }) => {
+const VerticalToolbar = ({ tools, activeTool, onToolClick, onCompareClick, onComparisonConfigClick, onZoomIn, onZoomOut, onBack, isInComparisonMode }) => {
   return (
     <div className="toolbar-container">
       <ToolbarBackButton onClick={onBack} />
+      <div className="toolbar-separator" />
+      <ZoomInButton onClick={onZoomIn} />
+      <ZoomOutButton onClick={onZoomOut} />
       <div className="toolbar-separator" />
       {tools.map((tool) => (
         <ToolbarButton
@@ -270,10 +307,14 @@ const PDFViewer = ({ documentUrl, onBack }) => {
     setIsLoading(true);
     setError(null);
 
+    // Detect system theme preference
+    const isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
     NutrientViewer.load({
       container,
       document: documentUrl,
       licenseKey: process.env.NEXT_PUBLIC_NUTRIENT_LICENSE_KEY,
+      theme: isDarkMode ? NutrientViewer.Theme.DARK : NutrientViewer.Theme.LIGHT,
     }).then((instance) => {
       instanceRef.current = instance;
       setIsLoading(false);
@@ -337,6 +378,20 @@ const PDFViewer = ({ documentUrl, onBack }) => {
 
   const handleComparisonConfigClick = () => {
     setShowComparisonConfig(true);
+  };
+
+  const handleZoomIn = () => {
+    const instance = instanceRef.current;
+    if (instance) {
+      instance.setViewState((viewState) => viewState.zoomIn());
+    }
+  };
+
+  const handleZoomOut = () => {
+    const instance = instanceRef.current;
+    if (instance) {
+      instance.setViewState((viewState) => viewState.zoomOut());
+    }
   };
 
   const applyComparisonColors = async () => {
@@ -474,6 +529,8 @@ const PDFViewer = ({ documentUrl, onBack }) => {
           onToolClick={handleToolClick}
           onCompareClick={handleCompareDocuments}
           onComparisonConfigClick={handleComparisonConfigClick}
+          onZoomIn={handleZoomIn}
+          onZoomOut={handleZoomOut}
           onBack={onBack}
           isInComparisonMode={isInComparisonMode}
         />

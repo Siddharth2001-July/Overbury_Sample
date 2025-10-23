@@ -64,7 +64,7 @@ const PDFUpload = ({ onFileSelect }) => {
   return (
     <div className="pdf-upload-container">
       <div className="pdf-upload-content">
-        <h1 className="pdf-upload-title">PDF Viewer</h1>
+        <h1 className="pdf-upload-title">Nutrient Viewer</h1>
         <p className="pdf-upload-subtitle">
           Upload a PDF document to view and annotate
         </p>
