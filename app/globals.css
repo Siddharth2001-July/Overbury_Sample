@@ -21,6 +21,12 @@
   --button-secondary-hover: #e0e0e0;
   --button-secondary-text: #333333;
   --hint-color: #999999;
+  --modal-overlay-bg: rgba(0, 0, 0, 0.5);
+  --modal-bg: #ffffff;
+  --modal-border: #e0e0e0;
+  --modal-header-bg: #f5f5f5;
+  --modal-close-color: #666666;
+  --modal-close-hover: #333333;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -47,6 +53,12 @@
     --button-secondary-hover: #34495e;
     --button-secondary-text: #ffffff;
     --hint-color: #666666;
+    --modal-overlay-bg: rgba(0, 0, 0, 0.7);
+    --modal-bg: #1a1a1a;
+    --modal-border: #333333;
+    --modal-header-bg: #2c3e50;
+    --modal-close-color: #999999;
+    --modal-close-hover: #ffffff;
   }
 }
 
@@ -404,18 +416,18 @@ a {
   border-radius: 8px;
 }
 
-.color-config-description {
+.comparison-config-description {
   color: var(--upload-text);
   font-size: 0.9rem;
   margin-bottom: 15px;
   opacity: 0.9;
 }
 
-.color-config-option {
+.comparison-config-option {
   margin-bottom: 15px;
 }
 
-.color-config-checkbox {
+.comparison-config-checkbox {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -424,36 +436,36 @@ a {
   font-size: 0.95rem;
 }
 
-.color-config-checkbox input[type="checkbox"] {
+.comparison-config-checkbox input[type="checkbox"] {
   cursor: pointer;
 }
 
-.color-config-inputs {
+.comparison-config-inputs {
   display: flex;
   gap: 20px;
   justify-content: space-between;
 }
 
-.color-input-group {
+.comparison-input-group {
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.color-input-group label {
+.comparison-input-group label {
   color: var(--upload-text);
   font-size: 0.85rem;
   font-weight: 500;
 }
 
-.color-input-wrapper {
+.comparison-input-wrapper {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-.color-input {
+.comparison-color-input {
   width: 50px;
   height: 40px;
   border: 2px solid var(--dropzone-border);
@@ -462,7 +474,7 @@ a {
   background: none;
 }
 
-.color-value {
+.comparison-color-value {
   color: var(--hint-color);
   font-family: monospace;
   font-size: 0.9rem;
@@ -470,4 +482,164 @@ a {
   background-color: var(--dropzone-bg);
   border: 1px solid var(--dropzone-border);
   border-radius: 4px;
+}
+
+/* Comparison Configuration Modal Styles */
+.comparison-config-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--modal-overlay-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.comparison-config-modal {
+  background-color: var(--modal-bg);
+  border: 1px solid var(--modal-border);
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: modalFadeIn 0.2s ease-out;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.comparison-config-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: var(--modal-header-bg);
+  border-bottom: 1px solid var(--modal-border);
+  border-radius: 12px 12px 0 0;
+}
+
+.comparison-config-modal-header h3 {
+  margin: 0;
+  color: var(--upload-text);
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.comparison-config-close {
+  background: none;
+  border: none;
+  color: var(--modal-close-color);
+  font-size: 28px;
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.comparison-config-close:hover {
+  background-color: var(--button-secondary-bg);
+  color: var(--modal-close-hover);
+}
+
+.comparison-config-modal-body {
+  padding: 25px;
+}
+
+.comparison-config-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 25px;
+  padding-top: 20px;
+  border-top: 1px solid var(--modal-border);
+}
+
+.comparison-config-apply-button,
+.comparison-config-cancel-button {
+  padding: 10px 24px;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.comparison-config-apply-button {
+  background-color: #3498db;
+  color: white;
+}
+
+.comparison-config-apply-button:hover {
+  background-color: #2980b9;
+}
+
+.comparison-config-cancel-button {
+  background-color: var(--button-secondary-bg);
+  color: var(--button-secondary-text);
+  border: 1px solid var(--modal-border);
+}
+
+.comparison-config-cancel-button:hover {
+  background-color: var(--button-secondary-hover);
+}
+
+/* Blend mode section styles */
+.comparison-config-section {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--modal-border);
+}
+
+.comparison-config-label {
+  display: block;
+  color: var(--upload-text);
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.comparison-config-select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--dropzone-border);
+  border-radius: 6px;
+  background-color: var(--modal-bg);
+  color: var(--upload-text);
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.comparison-config-select:hover {
+  border-color: var(--dropzone-hover-border);
+}
+
+.comparison-config-select:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+.comparison-config-hint {
+  color: var(--hint-color);
+  font-size: 0.85rem;
+  margin-top: 6px;
+  margin-bottom: 0;
 }

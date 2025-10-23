@@ -5,16 +5,9 @@ import PDFViewer from "./components/PDFViewer";
 
 export default function Home() {
   const [selectedPDF, setSelectedPDF] = useState(null);
-  const [comparisonColors, setComparisonColors] = useState({
-    documentA: null,
-    documentB: null
-  });
 
-  const handleFileSelect = (fileUrl, colors) => {
+  const handleFileSelect = (fileUrl) => {
     setSelectedPDF(fileUrl);
-    if (colors) {
-      setComparisonColors(colors);
-    }
   };
 
   const handleBack = () => {
@@ -23,7 +16,6 @@ export default function Home() {
       URL.revokeObjectURL(selectedPDF);
     }
     setSelectedPDF(null);
-    setComparisonColors({ documentA: null, documentB: null });
   };
 
   return (
@@ -34,7 +26,6 @@ export default function Home() {
         <PDFViewer
           documentUrl={selectedPDF}
           onBack={handleBack}
-          comparisonColors={comparisonColors}
         />
       )}
     </div>

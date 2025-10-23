@@ -1,27 +1,10 @@
 "use client";
 import React, { useState } from 'react';
 
-// Helper function to convert hex to RGB
-const hexToRgb = (hex) => {
-  if (!hex) return null;
-  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return result ? {
-    r: parseInt(result[1], 16),
-    g: parseInt(result[2], 16),
-    b: parseInt(result[3], 16)
-  } : null;
-};
-
 const PDFUpload = ({ onFileSelect }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [fileName, setFileName] = useState('');
   const [error, setError] = useState('');
-  const [showColorConfig, setShowColorConfig] = useState(false);
-  const [colors, setColors] = useState({
-    documentA: '#000000',
-    documentB: '#808080'
-  });
-  const [useDefaultColors, setUseDefaultColors] = useState(true);
 
   const handleDragEnter = (e) => {
     e.preventDefault();
@@ -69,21 +52,13 @@ const PDFUpload = ({ onFileSelect }) => {
 
     // Convert file to URL for NutrientViewer
     const fileUrl = URL.createObjectURL(file);
-    const comparisonColors = useDefaultColors ? null : {
-      documentA: hexToRgb(colors.documentA),
-      documentB: hexToRgb(colors.documentB)
-    };
-    onFileSelect(fileUrl, comparisonColors);
+    onFileSelect(fileUrl);
   };
 
   const handleUseSamplePDF = () => {
-    setFileName('nutrient-web-demo.pdf');
+    setFileName('Drawing1.pdf');
     setError('');
-    const comparisonColors = useDefaultColors ? null : {
-      documentA: hexToRgb(colors.documentA),
-      documentB: hexToRgb(colors.documentB)
-    };
-    onFileSelect('/nutrient-web-demo.pdf', comparisonColors);
+    onFileSelect('/Drawing1.pdf');
   };
 
   return (
@@ -93,66 +68,6 @@ const PDFUpload = ({ onFileSelect }) => {
         <p className="pdf-upload-subtitle">
           Upload a PDF document to view and annotate
         </p>
-
-        {/* Color Configuration Section */}
-        <div className="color-config-section">
-          <button
-            onClick={() => setShowColorConfig(!showColorConfig)}
-            className="color-config-toggle"
-          >
-            {showColorConfig ? '▼' : '▶'} Document Comparison Colors
-          </button>
-
-          {showColorConfig && (
-            <div className="color-config-content">
-              <p className="color-config-description">
-                Configure colors for document comparison mode
-              </p>
-              <div className="color-config-option">
-                <label className="color-config-checkbox">
-                  <input
-                    type="checkbox"
-                    checked={useDefaultColors}
-                    onChange={(e) => setUseDefaultColors(e.target.checked)}
-                  />
-                  <span>Use default colors</span>
-                </label>
-              </div>
-
-              {!useDefaultColors && (
-                <div className="color-config-inputs">
-                  <div className="color-input-group">
-                    <label htmlFor="colorA">Document A:</label>
-                    <div className="color-input-wrapper">
-                      <input
-                        type="color"
-                        id="colorA"
-                        value={colors.documentA}
-                        onChange={(e) => setColors({ ...colors, documentA: e.target.value })}
-                        className="color-input"
-                      />
-                      <span className="color-value">{colors.documentA}</span>
-                    </div>
-                  </div>
-
-                  <div className="color-input-group">
-                    <label htmlFor="colorB">Document B:</label>
-                    <div className="color-input-wrapper">
-                      <input
-                        type="color"
-                        id="colorB"
-                        value={colors.documentB}
-                        onChange={(e) => setColors({ ...colors, documentB: e.target.value })}
-                        className="color-input"
-                      />
-                      <span className="color-value">{colors.documentB}</span>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
-        </div>
 
         <div
           onDragEnter={handleDragEnter}
