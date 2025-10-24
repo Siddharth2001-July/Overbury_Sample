@@ -5,9 +5,10 @@ import React, { useEffect, useRef, useState } from "react";
 const TOOLS = [
   { id: 'select', icon: '/icons/select.svg', label: 'Select', mode: 'MULTI_ANNOTATIONS_SELECTION' },
   { id: 'note', icon: '/icons/note.svg', label: 'Note', mode: 'NOTE' },
+  { id: 'ink', icon: '/icons/ink.svg', label: 'Ink', mode: 'INK' },
   { id: 'line', icon: '/icons/line.svg', label: 'Line', mode: 'SHAPE_LINE' },
   { id: 'polygon', icon: '/icons/polygon.svg', label: 'Polygon', mode: 'SHAPE_POLYGON' },
-  // { id: 'cloudy_polygon', icon: '/icons/cloudy_polygon.svg', label: 'Cloudy Polygon', mode: 'CLOUDY_POLYGON' },
+  { id: 'cloudy_polygon', icon: '/icons/cloudy_polygon.svg', label: 'Cloudy Polygon', mode: 'SHAPE_POLYGON', preset: 'cloudy-polygon' },
   { id: 'rectangle', icon: '/icons/rectangle.svg', label: 'Rectangle', mode: 'SHAPE_RECTANGLE' },
   { id: 'ellipse', icon: '/icons/ellipse.svg', label: 'Ellipse', mode: 'SHAPE_ELLIPSE' },
   { id: 'measurement', icon: '/icons/measurement.svg', label: 'Measurement', mode: 'MEASUREMENT' },
@@ -19,32 +20,35 @@ const createModeToToolMap = (NutrientViewer) => {
   const map = {};
   TOOLS.forEach(tool => {
     const mode = NutrientViewer.InteractionMode[tool.mode];
-    if (mode) {
+    if (mode && !tool.preset) {  // Only map tools without presets
       map[mode] = tool.id;
     }
   });
   return map;
 };
 
-// Get interaction mode for a tool
-const getInteractionMode = (NutrientViewer, toolId) => {
-  const tool = TOOLS.find(t => t.id === toolId);
-  return tool ? NutrientViewer.InteractionMode[tool.mode] : null;
-};
-
 // Toggle tool activation
-const toggleTool = (instance, NutrientViewer, toolId) => {
+const toggleTool = (instance, NutrientViewer, toolId, setActiveTool, activeTool) => {
   if (!instance) return;
 
-  const targetMode = getInteractionMode(NutrientViewer, toolId);
-  const currentMode = instance.viewState.get("interactionMode");
+  const tool = TOOLS.find(t => t.id === toolId);
+  if (!tool) return;
 
-  if (currentMode === targetMode) {
+  const targetMode = NutrientViewer.InteractionMode[tool.mode];
+
+  if (activeTool === toolId) {
     // Deactivate current tool
     instance.setViewState(viewState => viewState.set("interactionMode", null));
+    setActiveTool(null);
   } else {
+    // If tool has a preset, set it first
+    if (tool.preset) {
+      instance.setCurrentAnnotationPreset(tool.preset);
+    }
     // Activate new tool
     instance.setViewState(viewState => viewState.set("interactionMode", targetMode));
+    // Manually set the active tool for tools with presets
+    setActiveTool(toolId);
   }
 };
 
@@ -156,22 +160,24 @@ const ToolbarBackButton = ({ onClick }) => {
 const VerticalToolbar = ({ tools, activeTool, onToolClick, onCompareClick, onComparisonConfigClick, onZoomIn, onZoomOut, onBack, isInComparisonMode }) => {
   return (
     <div className="toolbar-container">
-      <ToolbarBackButton onClick={onBack} />
-      <div className="toolbar-separator" />
-      <ZoomInButton onClick={onZoomIn} />
-      <ZoomOutButton onClick={onZoomOut} />
-      <div className="toolbar-separator" />
-      {tools.map((tool) => (
-        <ToolbarButton
-          key={tool.id}
-          tool={tool}
-          isActive={activeTool === tool.id}
-          onClick={() => onToolClick(tool.id)}
-        />
-      ))}
-      <div className="toolbar-separator" />
-      <ComparisonButton onClick={onCompareClick} isActive={isInComparisonMode} />
-      <ComparisonConfigButton onClick={onComparisonConfigClick} />
+      <div className="toolbar-scroll-content">
+        <ToolbarBackButton onClick={onBack} />
+        <div className="toolbar-separator" />
+        <ZoomInButton onClick={onZoomIn} />
+        <ZoomOutButton onClick={onZoomOut} />
+        <div className="toolbar-separator" />
+        {tools.map((tool) => (
+          <ToolbarButton
+            key={tool.id}
+            tool={tool}
+            isActive={activeTool === tool.id}
+            onClick={() => onToolClick(tool.id)}
+          />
+        ))}
+        <div className="toolbar-separator" />
+        <ComparisonButton onClick={onCompareClick} isActive={isInComparisonMode} />
+        <ComparisonConfigButton onClick={onComparisonConfigClick} />
+      </div>
     </div>
   );
 };
@@ -352,7 +358,7 @@ const PDFViewer = ({ documentUrl, onBack }) => {
 
   const handleToolClick = (toolId) => {
     const { NutrientViewer } = window;
-    toggleTool(instanceRef.current, NutrientViewer, toolId);
+    toggleTool(instanceRef.current, NutrientViewer, toolId, setActiveTool, activeTool);
   };
 
   const handleCompareDocuments = () => {

@@ -264,16 +264,113 @@ a {
   border-radius: 8px;
   padding: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--toolbar-separator);
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.toolbar-scroll-content {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  border: 1px solid var(--toolbar-separator);
+  overflow-y: auto;
+  overflow-x: hidden;
+  /* Hide scrollbar for Firefox */
+  scrollbar-width: none;
+  /* Hide scrollbar for IE and Edge */
+  -ms-overflow-style: none;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.toolbar-scroll-content::-webkit-scrollbar {
+  display: none;
+  width: 0;
+}
+
+/* Show custom scrollbar on hover for webkit browsers */
+.toolbar-container:hover .toolbar-scroll-content::-webkit-scrollbar {
+  display: block;
+  width: 6px;
+}
+
+.toolbar-container:hover .toolbar-scroll-content::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
+}
+
+.toolbar-container:hover .toolbar-scroll-content::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 3px;
+}
+
+.toolbar-container:hover .toolbar-scroll-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+/* Show scrollbar for Firefox on hover */
+.toolbar-container:hover .toolbar-scroll-content {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.3) rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive toolbar adjustments */
+@media (max-height: 700px) {
+  .toolbar-container {
+    max-height: 80vh;
+  }
+}
+
+@media (max-height: 500px) {
+  .toolbar-container {
+    max-height: 70vh;
+    top: 10px;
+    transform: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .toolbar-container {
+    left: 10px;
+    padding: 6px;
+  }
+
+  .toolbar-button {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+
+  .toolbar-button-icon {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .toolbar-container {
+    left: 5px;
+    padding: 4px;
+  }
+
+  .toolbar-button {
+    width: 36px;
+    height: 36px;
+    font-size: 14px;
+  }
+
+  .toolbar-button-icon {
+    width: 18px;
+    height: 18px;
+  }
 }
 
 .toolbar-separator {
   height: 1px;
   background-color: var(--toolbar-separator);
   margin: 4px 0;
+  flex-shrink: 0;
 }
 
 .toolbar-button {
@@ -289,6 +386,7 @@ a {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .toolbar-button:hover {
