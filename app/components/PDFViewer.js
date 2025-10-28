@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 // Tool configuration
 const TOOLS = [
   { id: 'select', icon: '/icons/select.svg', label: 'Select', mode: 'MULTI_ANNOTATIONS_SELECTION' },
+  { id: 'text', icon: '/icons/text.svg', label: 'Text', mode: 'TEXT' },
   { id: 'note', icon: '/icons/note.svg', label: 'Note', mode: 'NOTE' },
   { id: 'ink', icon: '/icons/ink.svg', label: 'Ink', mode: 'INK' },
   { id: 'line', icon: '/icons/line.svg', label: 'Line', mode: 'SHAPE_LINE' },
