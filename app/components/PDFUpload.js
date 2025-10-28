@@ -5,6 +5,7 @@ const PDFUpload = ({ onFileSelect }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [fileName, setFileName] = useState('');
   const [error, setError] = useState('');
+  const [noZoomEnabled, setNoZoomEnabled] = useState(false);
 
   const handleDragEnter = (e) => {
     e.preventDefault();
@@ -52,13 +53,13 @@ const PDFUpload = ({ onFileSelect }) => {
 
     // Convert file to URL for NutrientViewer
     const fileUrl = URL.createObjectURL(file);
-    onFileSelect(fileUrl);
+    onFileSelect(fileUrl, noZoomEnabled);
   };
 
   const handleUseSamplePDF = () => {
     setFileName('Drawing1.pdf');
     setError('');
-    onFileSelect('/Drawing1.pdf');
+    onFileSelect('/Drawing1.pdf', noZoomEnabled);
   };
 
   return (
@@ -127,6 +128,24 @@ const PDFUpload = ({ onFileSelect }) => {
           >
             Use Sample PDF
           </button>
+        </div>
+
+        {/* NoZoom Toggle Section */}
+        <div className="nozoom-toggle-section">
+          <label className="nozoom-toggle-label">
+            <input
+              type="checkbox"
+              checked={noZoomEnabled}
+              onChange={(e) => setNoZoomEnabled(e.target.checked)}
+              className="nozoom-toggle-checkbox"
+            />
+            <span className="nozoom-toggle-text">
+              Enable NoZoom for Annotations
+            </span>
+          </label>
+          <p className="nozoom-toggle-hint">
+            When enabled, annotations won't scale when zooming in/out (applies to Text and Stamp annotations only)
+          </p>
         </div>
       </div>
     </div>

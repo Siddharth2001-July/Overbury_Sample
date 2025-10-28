@@ -741,3 +741,42 @@ a {
   margin-top: 6px;
   margin-bottom: 0;
 }
+
+/* NoZoom Toggle Styles */
+.nozoom-toggle-section {
+  margin-top: 30px;
+  padding: 20px;
+  background-color: var(--dropzone-bg);
+  border: 2px solid var(--dropzone-border);
+  border-radius: 8px;
+  text-align: left;
+}
+
+.nozoom-toggle-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  gap: 10px;
+  color: var(--upload-text);
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+.nozoom-toggle-checkbox {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: #3498db;
+}
+
+.nozoom-toggle-text {
+  font-weight: 500;
+}
+
+.nozoom-toggle-hint {
+  color: var(--hint-color);
+  font-size: 0.85rem;
+  margin: 0;
+  margin-left: 30px;
+  line-height: 1.4;
+}

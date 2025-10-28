@@ -5,9 +5,11 @@ import PDFViewer from "./components/PDFViewer";
 
 export default function Home() {
   const [selectedPDF, setSelectedPDF] = useState(null);
+  const [noZoomEnabled, setNoZoomEnabled] = useState(false);
 
-  const handleFileSelect = (fileUrl) => {
+  const handleFileSelect = (fileUrl, noZoom) => {
     setSelectedPDF(fileUrl);
+    setNoZoomEnabled(noZoom);
   };
 
   const handleBack = () => {
@@ -26,6 +28,7 @@ export default function Home() {
         <PDFViewer
           documentUrl={selectedPDF}
           onBack={handleBack}
+          noZoomEnabled={noZoomEnabled}
         />
       )}
     </div>

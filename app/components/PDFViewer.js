@@ -289,7 +289,7 @@ const hexToRgb = (hex) => {
   } : null;
 };
 
-const PDFViewer = ({ documentUrl, onBack }) => {
+const PDFViewer = ({ documentUrl, onBack, noZoomEnabled = false }) => {
   const containerRef = useRef(null);
   const instanceRef = useRef(null);
   const fileInputRef = useRef(null);
@@ -346,6 +346,38 @@ const PDFViewer = ({ documentUrl, onBack }) => {
         setIsInComparisonMode(false);
         // setComparisonDocumentB(null);
       });
+
+      // If noZoom is enabled, set up the event listener for new annotations
+      if (noZoomEnabled) {
+        instance.addEventListener("annotations.create", (createdAnnotations) => {
+          createdAnnotations
+            .filter(annotation =>
+              annotation instanceof NutrientViewer.Annotations.StampAnnotation ||
+              (annotation instanceof NutrientViewer.Annotations.TextAnnotation && !annotation.callout)
+            )
+            .forEach(annotation => {
+              instance.update(annotation.set("noZoom", true));
+            });
+        });
+
+        // Apply noZoom to existing annotations
+        (async () => {
+          const pagesAnnotations = await Promise.all(
+            Array.from({ length: instance.totalPageCount })
+              .map((_, pageIndex) => instance.getAnnotations(pageIndex))
+          );
+          await Promise.all(
+            pagesAnnotations.flatMap((pageAnnotations) =>
+              pageAnnotations
+                .filter(annotation =>
+                  annotation instanceof NutrientViewer.Annotations.StampAnnotation ||
+                  annotation instanceof NutrientViewer.Annotations.TextAnnotation
+                )
+                .map(annotation => instance.update(annotation.set("noZoom", true)))
+            )
+          );
+        })();
+      }
     }).catch((err) => {
       console.error("Failed to load PDF:", err);
       setError("Failed to load PDF. Please try again.");
@@ -355,7 +387,7 @@ const PDFViewer = ({ documentUrl, onBack }) => {
     return () => {
       NutrientViewer?.unload(container);
     };
-  }, [documentUrl]);
+  }, [documentUrl, noZoomEnabled]);
 
   const handleToolClick = (toolId) => {
     const { NutrientViewer } = window;
